@@ -3,7 +3,7 @@ const todoList = document.getElementById('tasks__list')
 const todoAdd = document.getElementById('tasks__add');
 
 todoAdd.addEventListener('click', (event) => {
-    if (submitInp.value === '') return
+    if (submitInp.value === ''.trim()) return
         // console.log(submitInp.value);
         todoList.innerHTML += `
         <div class="task">
