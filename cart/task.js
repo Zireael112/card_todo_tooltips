@@ -46,8 +46,8 @@ function decrBtnChange() {
 }
 
 function incrBtnChange() {
-        let counter = this.previousElementSibling;
-        counter.textContent = Number(counter.textContent) + 1; 
+    let counter = this.previousElementSibling;
+    counter.textContent = Number(counter.textContent) + 1; 
 }
 
 for (let decreaseBtn of decreaseBtns) {
