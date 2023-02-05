@@ -1,58 +1,59 @@
-const product = document.querySelector('.cart__products');
-const valueButtons = document.querySelectorAll('.product__quantity-control');
-const addProtuct = document.querySelectorAll('.product__add');
+let addButtons = Array.from(document.getElementsByClassName("product__add"));
+let decreaseBtns = Array.from(document.getElementsByClassName("product__quantity-control_dec"));
+let increaseBtns = Array.from(document.getElementsByClassName("product__quantity-control_inc"));
 
+function addItem() {
+    let newItem = this.closest("div.product");
+    let amount = Number(newItem.getElementsByClassName("product__quantity-value")[0].textContent);
+    let picture = newItem.getElementsByClassName("product__image")[0].src;
+    let idItem = newItem.getAttribute("data-id");
+    let cart = document.getElementsByClassName("cart__products")[0];
 
-for (let el of valueButtons) {
-    el.addEventListener('click', changeValue);
-}
+    function addNewItem() {
+        let newItemDiv =
+        `<div class="cart__product" data-id=${idItem}>
+            <img class="cart__product-image" src=${picture}>
+            <div class="cart__product-count">${amount}</div>
+        </div>`;
+    cart.insertAdjacentHTML("afterBegin", newItemDiv);
+    }
 
-for (let el of addProtuct) {
-    el.addEventListener('click', addToCart);
-}
-
-function changeValue(event) {
-
-    let value = event.target.parentNode.querySelector('.product__quantity-value');
-    let count = +value.innerText;
-
-    if (event.target.classList.contains('product__quantity-control_inc')) {
-        count++;
-        value.innerText = count;
+    let cartProd = Array.from(cart.getElementsByClassName("cart__product"));
+    let cartProdId = [];
+    for (let i = 0; i < cartProd.length; i++) {
+        cartProdId[i] = cartProd[i].getAttribute("data-id");
+    }
+    if (cartProdId.indexOf(idItem) !== -1) {
+        for (let i = 0; i < cartProdId.length; i++) {
+        if (cartProdId[i] === idItem) {
+            cartProd[i].querySelector(".cart__product-count").textContent = Number(cartProd[i].querySelector(".cart__product-count").textContent) + amount;
+        }
+        }  
     } else {
-        if (count > 1) {
-            count--;
-            value.innerText = count;
-        } else {
-            value.innerText = 1;
-        }
+        addNewItem();
+    } 
+}
+
+for (let addButton of addButtons) {
+    addButton.addEventListener("click", addItem);
+}
+
+function decrBtnChange() {
+    let counter = this.nextElementSibling;
+    if (Number(counter.textContent) > 1) {
+        counter.textContent = Number(counter.textContent) - 1;    
     }
 }
 
-function addToCart(event) {
+function incrBtnChange() {
+        let counter = this.previousElementSibling;
+        counter.textContent = Number(counter.textContent) + 1; 
+}
 
-    const product = event.target.closest('.product');
-    const id = product.dataset.id;
-    const countFromProduct = +event.target.parentNode.querySelector('.product__quantity-value').innerText;
+for (let decreaseBtn of decreaseBtns) {
+    decreaseBtn.addEventListener("click", decrBtnChange);
+}
 
-    for (let item of product.children) {
-
-        if (item.dataset.id === id) {
-            let productCount = item.querySelector('.cart__product-count');
-            let total = +productCount.innerText;
-            productCount.innerText = total + countFromProduct;
-
-            return false;
-        }
-    }
-
-    const productImg = product.querySelector('.product__image').src;
-    const count = product.querySelector('.product__quantity-value').innerText;
-
-    const productToCart = `<div class="cart__product" data-id="${id}">
-                                <img class="cart__product-image" src="${productImg}">
-                                <div class="cart__product-count">${count}</div>
-                            </div>`;
-
-    product.insertAdjacentHTML('beforeend', productToCart);
+for (let increaseBtn of increaseBtns) {
+    increaseBtn.addEventListener("click", incrBtnChange);
 }
