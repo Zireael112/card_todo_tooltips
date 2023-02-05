@@ -10,9 +10,18 @@ todoAdd.addEventListener('click', (event) => {
             <div class="task__title">
                 ${submitInp.value}
             </div>
-            <a href="#" class="task__remove" onclick="this.closest('.task').outerHTML = '';">&times;</a>
+            <a href="#" class="task__remove">&times;</a>
         </div>        
         `
+        
+        let links = document.querySelectorAll('a.task__remove')
+
+        for (let link of links) {
+            link.onclick = () => {
+                link.closest('.task').outerHTML = ''.trim()
+            }
+        }
+    
         submitInp.value = ''
         event.preventDefault();
 
