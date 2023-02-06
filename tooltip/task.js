@@ -21,6 +21,6 @@ function setTooltipActive() {
     document.body.append(createEl); 
   }
 
-for (element of tooltips) {
+for (let element of tooltips) {
     element.addEventListener('click', setTooltipActive);
 }
