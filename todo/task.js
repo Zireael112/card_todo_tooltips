@@ -1,11 +1,23 @@
 const submitInp = document.getElementById('task__input')
 const todoList = document.getElementById('tasks__list')
-const todoAdd = document.getElementById('tasks__add');
+const todoAdd = document.getElementById('tasks__add')
 
 todoAdd.addEventListener('click', (event) => {
-    if (submitInp.value === ''.trim()) return
+    if (submitInp.value.trim() === '') {
+        event.preventDefault()
+        return
+    }
         // console.log(submitInp.value);
-        todoList.innerHTML += `
+        // todoList.innerHTML += `
+        // <div class="task">
+        //     <div class="task__title">
+        //         ${submitInp.value}
+        //     </div>
+        //     <a href="#" class="task__remove">&times;</a>
+        // </div>        
+        // `
+
+        textHTML = `
         <div class="task">
             <div class="task__title">
                 ${submitInp.value}
@@ -14,16 +26,17 @@ todoAdd.addEventListener('click', (event) => {
         </div>        
         `
         
+        todoList.insertAdjacentHTML('afterbegin', textHTML)
+
         let links = document.querySelectorAll('a.task__remove')
 
         for (let link of links) {
             link.onclick = () => {
-                link.closest('.task').outerHTML = ''.trim()
+                link.parentElement.remove()
             }
         }
-    
+
         submitInp.value = ''
-        event.preventDefault();
+        event.preventDefault()
 
 })
-
